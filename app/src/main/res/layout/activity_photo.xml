@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button3" />
+        android:id="@+id/button3"
+        android:onClick="upload" />
 
 </RelativeLayout>
