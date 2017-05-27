@@ -1,5 +1,6 @@
 package com.tom.photo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -80,17 +81,7 @@ public class MainActivity extends AppCompatActivity {
         });
         // is user login?
         auth = FirebaseAuth.getInstance();
-        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = auth.getCurrentUser();
-                if (user != null) {
-
-                }else{ // NOT login
-                    
-                }
-            }
-        });
+        auth.addAuthStateListener(this);
     }
 
     @Override
@@ -113,5 +104,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        auth.removeAuthStateListener(this);
+        auth.signOut();
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            Log.d(TAG, "onAuthStateChanged: "+user.getEmail()+"/"+user.getUid());
+        }else{ // NOT login
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 }

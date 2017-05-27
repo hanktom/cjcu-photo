@@ -1,10 +1,12 @@
 package com.tom.photo;
 
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +30,15 @@ public class LoginActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(email, passwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                task.
+                if (task.isSuccessful()){
+                    Toast.makeText(LoginActivity.this, "登入成功", Toast.LENGTH_LONG).show();
+                    finish();
+                }else{
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setMessage("登入失敗")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
             }
         });
     }
