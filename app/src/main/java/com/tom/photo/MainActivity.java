@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(MainActivity.this, PhotoActivity.class));
             }
         });
         ListView list = (ListView) findViewById(R.id.list);
@@ -125,27 +124,8 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         if (user != null) {
             Log.d(TAG, "onAuthStateChanged: "+user.getEmail()+"/"+user.getUid());
             DatabaseReference users = FirebaseDatabase.getInstance().getReference("users");
-            users.child(user.getUid()).child("nickname")
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String nickname = (String) dataSnapshot.getValue();
-                            Log.d(TAG, "onDataChange: "+ nickname);
-                            if (nickname == null){
-                                EditText edNickname = new EditText(MainActivity.this);
-                                new AlertDialog.Builder(MainActivity.this)
-                                        .setTitle("Please enter your nickname:")
-                                        .setView(edNickname)
-                                        .setPositiveButton("OK", null)
-                                        .show();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+            users.child(user.getUid())
+                    .child("email").setValue(user.getEmail());
         }else{ // NOT login
 //            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 //            startActivity(intent);
