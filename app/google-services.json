@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "344696667877",
+    "firebase_url": "https://cjcu-photo-2850d.firebaseio.com",
+    "project_id": "cjcu-photo-2850d",
+    "storage_bucket": "cjcu-photo-2850d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344696667877:android:535d6543327928f1",
+        "android_client_info": {
+          "package_name": "com.tom.photo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344696667877-1m0kgh2jbvkpac20m3962ml243gpif4u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tom.photo",
+            "certificate_hash": "d3f1436e2b811471bdb94507f67578982dd0aab0"
+          }
+        },
+        {
+          "client_id": "344696667877-9lan3h994ajfsjrger10n9hvb5cpecm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmm0xFxNwc23eV7MlBXOfF1Vme83CIsSs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344696667877-9lan3h994ajfsjrger10n9hvb5cpecm9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
