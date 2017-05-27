@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
 public class PhotoActivity extends AppCompatActivity {
 
@@ -103,10 +104,11 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     public void upload(View view){
-        StorageReference storage = FirebaseStorage.getInstance().getReference("aa");
+        StorageReference storage = FirebaseStorage.getInstance().getReference();
+        StorageReference imagesRef = storage.child(new Date().getTime()+"");
         try {
             FileInputStream fis = new FileInputStream(selectedImagePath);
-            storage.putStream(fis);
+            imagesRef.putStream(fis);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
