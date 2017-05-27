@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -22,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
@@ -121,6 +124,28 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             Log.d(TAG, "onAuthStateChanged: "+user.getEmail()+"/"+user.getUid());
+            DatabaseReference users = FirebaseDatabase.getInstance().getReference("users");
+            users.child(user.getUid()).child("nickname")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String nickname = (String) dataSnapshot.getValue();
+                            Log.d(TAG, "onDataChange: "+ nickname);
+                            if (nickname == null){
+                                EditText edNickname = new EditText(MainActivity.this);
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("Please enter your nickname:")
+                                        .setView(edNickname)
+                                        .setPositiveButton("OK", null)
+                                        .show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
         }else{ // NOT login
 //            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 //            startActivity(intent);
