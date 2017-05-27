@@ -1,5 +1,6 @@
 package com.tom.photo;
 
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,9 +25,9 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v){
         EditText edEmail = (EditText) findViewById(R.id.ed_email);
         EditText edPasswd = (EditText) findViewById(R.id.ed_passwd);
-        String email = edEmail.getText().toString();
-        String passwd = edPasswd.getText().toString();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final String email = edEmail.getText().toString();
+        final String passwd = edPasswd.getText().toString();
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signInWithEmailAndPassword(email, passwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -34,12 +35,35 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "登入成功", Toast.LENGTH_LONG).show();
                     finish();
                 }else{
-                    new AlertDialog.Builder(LoginActivity.this)
-                            .setMessage("登入失敗")
-                            .setPositiveButton("OK", null)
-                            .show();
+                    loginFailed(auth, email, passwd);
                 }
             }
         });
+    }
+
+    private void loginFailed(final FirebaseAuth auth, final String email, final String passwd) {
+        new AlertDialog.Builder(LoginActivity.this)
+                .setMessage("登入失敗, 註冊嗎?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        createUser(auth, email, passwd);
+                    }
+                })
+                .show();
+    }
+
+    private void createUser(FirebaseAuth auth, String email, String passwd) {
+        auth.createUserWithEmailAndPassword(email, passwd)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+
+                        }else{
+
+                        }
+                    }
+                });
     }
 }
