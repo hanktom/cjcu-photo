@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -21,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
@@ -119,8 +122,18 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         if (user != null) {
             Log.d(TAG, "onAuthStateChanged: "+user.getEmail()+"/"+user.getUid());
         }else{ // NOT login
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//            startActivity(intent);
+            //Firebase-ui
+            startActivityForResult(
+                    AuthUI.getInstance().createSignInIntentBuilder()
+                    .setLogo(R.drawable.logo)
+                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
+                            new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()))
+                            .build()
+                    , 100);
         }
     }
 }
